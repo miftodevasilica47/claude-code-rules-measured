@@ -206,7 +206,7 @@ def masoara(ses, taietura, min_msg, prag_text):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--root", default=os.path.expanduser("~/.claude/projects"))
-    ap.add_argument("--cutoff", default="2026-08-26T12:43:00Z",
+    ap.add_argument("--cutoff", default="2026-08-26T16:19:00Z",
                     help="ISO UTC: the moment you changed the rules")
     ap.add_argument("--model", default="claude-opus-5")
     ap.add_argument("--min-messages", type=int, default=10,
