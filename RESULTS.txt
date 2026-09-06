@@ -1,0 +1,45 @@
+======================================================================================
+RULE EFFECT — claude-opus-5, cutoff 2026-08-26T12:43:00Z
+======================================================================================
+  before   sessions=  54  days=2026-08-05..2026-08-26  text_turns= 2185  messages= 18179
+  after    sessions=  31  days=2026-08-26..2026-09-06  text_turns= 2687  messages= 13052
+
+metric                                                before    after   ratio      raw bef raw aft             p
+--------------------------------------------------------------------------------------
+--- what the model SAYS (text patterns) ---
+R3  labels 'measured' vs 'my guess'                   11.2% ->  13.2%    1.2x    245/2185    355/2687     3.5e-02 *  
+R4  footer (done / next / unverified)                  0.3% ->  17.5%   63.7x      6/2185    470/2687    1.4e-119 ***
+R5  says what it left undone                           0.6% ->   0.6%    1.0x     13/2185     16/2687     1.0e+00 n.s.
+R6  flags it instead of doing it                       0.2% ->   0.2%    1.0x      4/2185      5/2687     1.0e+00 n.s.
+R9  'I ran it and saw the output'                      3.1% ->  17.5%    5.7x     67/2185    469/2687     1.0e-64 ***
+R10 says where the number came from                    8.2% ->  10.6%    1.3x    180/2185    286/2687     4.5e-03 ** 
+R11 says it looked for the same bug elsewhere          1.1% ->   3.4%    3.1x     24/2185     91/2687     6.7e-08 ***
+R15 stops after 3 failed attempts                      0.4% ->   0.3%    0.8x      9/2185      9/2687     8.1e-01 n.s.
+R17 'I don't know' / 'I haven't verified'              1.1% ->   7.4%    7.0x     23/2185    198/2687     9.0e-30 ***
+--  self-corrects unprompted                           0.8% ->   1.3%    1.6x     18/2185     35/2687     1.3e-01 n.s.
+--- what the model DOES (from tool calls) ---
+REAL claims done having run nothing (lower = better)   8.5% ->   8.3%    1.0x     41/483      50/601    
+REAL number backed by a tool call                     90.2% ->  95.8%    1.1x   1355/1502   1352/1411   
+REAL actually searched again after a bug               1.6% ->   8.8%    5.6x      6/385      38/432    
+REAL truncates output with '| head' (lower = better)  23.5% ->  19.1%    0.8x   1835/7818   1025/5367   
+REAL tool calls that are verifications                84.8% ->  97.4%    1.1x   8191/9664   5438/5586   
+REAL opens its memory folder                           5.0% ->   6.8%    1.4x    482/9664    382/5586   
+REAL tool errors (lower = better)                      2.3% ->   2.0%    0.8x    224/9664    109/5585   
+REAL long words (>=13 letters) (lower = better)        2.2% ->   2.2%    1.0x   7966/356215  6172/286949  
+human catches a mistake (per human message) (lower = better)   0.7% ->   1.2%    1.6x     13/1783      7/588    
+human catches a mistake (per response) (lower = better)   0.6% ->   0.3%    0.4x     13/2185      7/2687   
+--------------------------------------------------------------------------------------
+
+mean response length (characters)                      975.6    633.6
+median response length                                 465.0    178.0
+tool calls / session                                   179.0    180.2
+human messages / text response                           0.8      0.2
+searches / session                                      37.1     36.9
+file writes / session                                   54.3     60.8
+human catches a mistake / session                        0.2      0.2
+
+BY PROJECT (only those with data in both periods)
+--------------------------------------------------------------------------------------
+Betting platform                               52/26  turns  2048/2273  footer   0.2% -> 15.9%
+Books and content                               1/2   turns   131/216   footer   0.8% -> 33.3%
+Client websites                                 1/2   turns     6/184   footer   0.0% -> 15.2%
