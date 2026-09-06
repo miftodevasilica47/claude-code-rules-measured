@@ -43,6 +43,9 @@ TIPARE = {
     "R15_ma_opresc":("R15 stops after 3 failed attempts",
                      C(r"a treia incercare|am incercat de (3|trei) ori|ma opresc aici|"
                        r"nu mai incerc|dupa 3 incercari")),
+    "R19_am_cautat":("R19 says what it searched for before writing",
+                     C(r"am cautat .* in |exista deja|il refolosesc|nu exista, scriu|"
+                       r"refolosesc |ponytail:")),
     "R17_nu_stiu":  ("R17 'I don't know' / 'I haven't verified'",
                      C(r"\bnu stiu\b|nu am verificat|nu pot confirma|nu am deschis|"
                        r"nu e masurat|nu am rulat|nu am date|nu sunt sigur")),
@@ -59,6 +62,14 @@ CIFRA       = C(r"\d[\d.,]{2,}")
 # through Grep/Edit. Counting tool names alone returns zero. The first version of
 # this script made exactly that mistake.
 RE_CAUTA  = C(r"\bgrep\b|\brg\b|\bfind \b|\bripgrep\b")
+# R18: narration. In these transcripts, text and tool calls live in SEPARATE
+# assistant messages (only 1 combined case in 32,621), so narration is a short
+# text message immediately followed by a tool-only one. It counts as cuttable
+# unless it carries a reason, a number, or where-it-searched (rule 11).
+NAR_MOTIV = C(r"pentru ca|fiindca|\bca sa\b|altfel |de-aia|de aceea|inainte sa|risc")
+NAR_CIFRA = C(r"\d")
+# R9 with proof: a done-line that names the command or file that proved it.
+DOVADA    = C(r"`[^`]+`|\.(py|md|json|db|sh|txt|csv)\b|->|→")
 RE_SCRIE  = C(r"sed -i|cat >|\btee \b|python3 - <<|>\s*[\w./~-]+\.(py|md|json|txt|html|sh|csv)")
 UNELTE_VERIFICARE = {"Bash", "Read", "Grep", "Glob", "WebFetch", "WebSearch", "NotebookRead"}
 
@@ -168,6 +179,13 @@ def masoara(ses, taietura, min_msg, prag_text):
                     if re.search(r"\|\s*head\b", arg): c["trunchiaza"] += 1
                 if "memorie" in arg or "memory-" in arg: c["atinge_memoria"] += 1
 
+            # R18 narration: short text turn followed by a tool-only turn
+            urm = s["ev"][i+1] if i+1 < len(s["ev"]) else None
+            if e["n"] and not un and urm and urm["r"] == "a" and urm["u"] and not urm["n"]:
+                c["nar_total"] += 1; c["nar_car"] += e["n"]
+                util = (NAR_MOTIV.search(e["x"]) or NAR_CIFRA.search(e["x"])
+                        or TIPARE["R11_alt_loc"][1].search(e["x"]))
+                if not util: c["nar_taiabila"] += 1; c["nar_taiabila_car"] += e["n"]
             if e["n"] <= prag_text: continue
             c["turnuri_text"] += 1; pc["turnuri_text"] += 1
             LUNG[F].append(e["n"])
@@ -267,6 +285,8 @@ def main():
     rand("REAL claims done having run nothing", "afirma_gata_pe_gol", "afirma_gata", True, False)
     rand("REAL number backed by a tool call", "cifra_cu_unealta", "turnuri_cu_cifre", False, False)
     rand("REAL actually searched again after a bug", "bug_apoi_a_cautat", "bug_semnalat", False, False)
+    rand("R18 cuttable narration", "nar_taiabila_car", "nar_car", True, False)
+    rand("R9+ done-line naming its proof", "gata_cu_dovada", "linii_gata", False, False)
     rand("REAL truncates output with '| head'", "trunchiaza", "bash", True, False)
     rand("REAL tool calls that are verifications", "unelte_verificare", "unelte", False, False)
     rand("REAL opens its memory folder", "atinge_memoria", "unelte", False, False)
@@ -281,6 +301,7 @@ def main():
         ("median response length", lambda F: st.median(LUNG[F])),
         ("tool calls / session", lambda F: N[F]["unelte"]/SES[F]),
         ("human messages / text response", lambda F: N[F]["mesaje_om"]/max(1, N[F]["turnuri_text"])),
+        ("cuttable narration chars / session", lambda F: N[F]["nar_taiabila_car"]/SES[F]),
         ("searches / session", lambda F: N[F]["cautari"]/SES[F]),
         ("file writes / session", lambda F: N[F]["scrieri"]/SES[F]),
         ("human catches a mistake / session", lambda F: N[F]["om_contrazice"]/SES[F]),

@@ -2,44 +2,48 @@
 RULE EFFECT — claude-opus-5, cutoff 2026-08-26T16:19:00Z
 ======================================================================================
   before   sessions=  55  days=2026-08-05..2026-08-26  text_turns= 2252  messages= 18609
-  after    sessions=  30  days=2026-08-26..2026-09-06  text_turns= 2628  messages= 12648
+  after    sessions=  30  days=2026-08-26..2026-09-06  text_turns= 2649  messages= 12725
 
 metric                                                before    after   ratio      raw bef raw aft             p
 --------------------------------------------------------------------------------------
 --- what the model SAYS (text patterns) ---
-R3  labels 'measured' vs 'my guess'                   11.3% ->  13.2%    1.2x    254/2252    346/2628     4.9e-02 *  
-R4  footer (done / next / unverified)                  0.5% ->  17.8%   33.3x     12/2252    467/2628    2.5e-115 ***
-R5  says what it left undone                           0.8% ->   0.4%    0.5x     18/2252     11/2628     9.4e-02 n.s.
-R6  flags it instead of doing it                       0.2% ->   0.2%    1.1x      4/2252      5/2628     1.0e+00 n.s.
-R9  'I ran it and saw the output'                      3.2% ->  17.8%    5.6x     72/2252    467/2628     1.3e-65 ***
-R10 says where the number came from                    8.3% ->  10.6%    1.3x    188/2252    279/2628     7.3e-03 ** 
-R11 says it looked for the same bug elsewhere          1.1% ->   3.4%    3.1x     25/2252     90/2628     6.3e-08 ***
-R15 stops after 3 failed attempts                      0.4% ->   0.3%    0.7x     10/2252      8/2628     4.8e-01 n.s.
-R17 'I don't know' / 'I haven't verified'              1.2% ->   7.5%    6.5x     26/2252    198/2628     1.3e-29 ***
---  self-corrects unprompted                           0.8% ->   1.3%    1.7x     18/2252     35/2628     9.6e-02 n.s.
+R3  labels 'measured' vs 'my guess'                   11.3% ->  13.3%    1.2x    254/2252    351/2649     3.7e-02 *  
+R4  footer (done / next / unverified)                  0.5% ->  17.8%   33.4x     12/2252    472/2649    4.4e-116 ***
+R5  says what it left undone                           0.8% ->   0.5%    0.6x     18/2252     12/2649     1.4e-01 n.s.
+R6  flags it instead of doing it                       0.2% ->   0.2%    1.3x      4/2252      6/2649     7.6e-01 n.s.
+R9  'I ran it and saw the output'                      3.2% ->  17.9%    5.6x     72/2252    473/2649     2.1e-66 ***
+R10 says where the number came from                    8.3% ->  10.6%    1.3x    188/2252    282/2649     6.4e-03 ** 
+R11 says it looked for the same bug elsewhere          1.1% ->   3.6%    3.2x     25/2252     95/2649     8.3e-09 ***
+R15 stops after 3 failed attempts                      0.4% ->   0.3%    0.7x     10/2252      8/2649     4.8e-01 n.s.
+R19 says what it searched for before writing           2.5% ->   3.3%    1.3x     57/2252     87/2649     1.3e-01 n.s.
+R17 'I don't know' / 'I haven't verified'              1.2% ->   7.6%    6.6x     26/2252    202/2649     3.3e-30 ***
+--  self-corrects unprompted                           0.8% ->   1.4%    1.7x     18/2252     36/2649     7.4e-02 n.s.
 --- what the model DOES (from tool calls) ---
-REAL claims done having run nothing (lower = better)   9.2% ->   7.7%    0.8x     46/499      45/588    
-REAL number backed by a tool call                     90.2% ->  96.1%    1.1x   1392/1544   1318/1372   
-REAL actually searched again after a bug               1.8% ->   8.8%    5.0x      7/397      37/421    
-REAL truncates output with '| head' (lower = better)  23.3% ->  19.3%    0.8x   1862/7999   1002/5195   
-REAL tool calls that are verifications                84.9% ->  97.5%    1.1x   8381/9866   5257/5393   
-REAL opens its memory folder                           4.9% ->   7.0%    1.4x    488/9866    376/5393   
-REAL tool errors (lower = better)                      2.3% ->   2.0%    0.9x    226/9866    107/5393   
-REAL long words (>=13 letters) (lower = better)        2.2% ->   2.2%    1.0x   8140/364772  6024/279230  
-human catches a mistake (per human message) (lower = better)   0.7% ->   1.2%    1.7x     13/1814      7/564    
-human catches a mistake (per response) (lower = better)   0.6% ->   0.3%    0.5x     13/2252      7/2628   
+REAL claims done having run nothing (lower = better)   9.2% ->   7.6%    0.8x     46/499      45/595    
+REAL number backed by a tool call                     90.2% ->  96.0%    1.1x   1392/1544   1329/1384   
+REAL actually searched again after a bug               1.8% ->   8.7%    4.9x      7/397      37/426    
+R18 cuttable narration (lower = better)               20.9% ->  20.2%    1.0x  63525/303601 104245/516104  
+R9+ done-line naming its proof                         0.0% ->   0.0%      -      0/0         0/0      
+REAL truncates output with '| head' (lower = better)  23.3% ->  19.3%    0.8x   1862/7999   1008/5219   
+REAL tool calls that are verifications                84.9% ->  97.4%    1.1x   8381/9866   5283/5423   
+REAL opens its memory folder                           4.9% ->   7.0%    1.4x    488/9866    377/5423   
+REAL tool errors (lower = better)                      2.3% ->   2.0%    0.9x    226/9866    108/5422   
+REAL long words (>=13 letters) (lower = better)        2.2% ->   2.2%    1.0x   8140/364772  6106/283083  
+human catches a mistake (per human message) (lower = better)   0.7% ->   1.2%    1.7x     13/1814      7/570    
+human catches a mistake (per response) (lower = better)   0.6% ->   0.3%    0.5x     13/2252      7/2649   
 --------------------------------------------------------------------------------------
 
-mean response length (characters)                      969.5    630.2
-median response length                                 448.0    178.5
-tool calls / session                                   179.4    179.8
+mean response length (characters)                      969.5    633.7
+median response length                                 448.0    179.0
+tool calls / session                                   179.4    180.8
 human messages / text response                           0.8      0.2
-searches / session                                      37.1     37.1
-file writes / session                                   54.2     61.3
+cuttable narration chars / session                    1155.0   3474.8
+searches / session                                      37.1     37.3
+file writes / session                                   54.2     61.6
 human catches a mistake / session                        0.2      0.2
 
 BY PROJECT (only those with data in both periods)
 --------------------------------------------------------------------------------------
-Betting platform                               53/25  turns  2115/2214  footer   0.5% -> 16.2%
+Betting platform                               53/25  turns  2115/2235  footer   0.5% -> 16.2%
 Books and content                               1/2   turns   131/216   footer   0.8% -> 33.3%
 Client websites                                 1/2   turns     6/184   footer   0.0% -> 15.2%
